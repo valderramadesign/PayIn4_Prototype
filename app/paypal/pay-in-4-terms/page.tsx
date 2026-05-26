@@ -129,7 +129,7 @@ export default function PayIn4Terms() {
 
             {/* What to know section */}
             <div className="px-[20px] pb-[20px] flex flex-col gap-[12px]">
-              <p className="text-[18px] font-bold text-[#001435] leading-[24px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+              <p className="text-[18px] font-semibold text-[#001435] leading-[24px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                 What to know about pre-approval
               </p>
               <ul className="flex flex-col gap-[10px]" style={{ listStyleType: "disc", paddingLeft: "18px" }}>
@@ -146,7 +146,7 @@ export default function PayIn4Terms() {
 
             {/* How Pay in 4 works section */}
             <div className="px-[20px] pb-[20px] flex flex-col gap-[12px]">
-              <p className="text-[18px] font-bold text-[#001435] leading-[24px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+              <p className="text-[18px] font-semibold text-[#001435] leading-[24px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                 How Pay in 4 works
               </p>
               <div className="flex flex-col gap-[12px]">
@@ -175,12 +175,9 @@ export default function PayIn4Terms() {
 
           {/* CTA footer */}
           <div
-            className="bg-[#f1f2f3] flex flex-col items-center gap-[12px] px-[20px] pt-[16px] pb-[24px] shrink-0 w-full"
+            className="bg-[#f1f2f3] flex flex-col items-center px-[20px] pt-[16px] pb-[24px] shrink-0 w-full"
             style={{ boxShadow: "inset 0 0.5px 0 0 #e0e3e7" }}
           >
-            <button className="text-[14px] text-[#0070e0] leading-[20px] cursor-pointer" style={{ fontFamily: "system-ui, sans-serif" }}>
-              About payment methods
-            </button>
             <button
               onClick={() => {
                 const params = new URLSearchParams(window.location.search);

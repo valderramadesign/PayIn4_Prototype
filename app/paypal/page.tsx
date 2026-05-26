@@ -232,7 +232,7 @@ export default function PayPalCheckout() {
                     </div>
                     <div className="flex flex-1 flex-row items-center self-stretch">
                       <div className="flex flex-1 gap-[4px] h-full items-end min-w-0 pb-px pl-[8px] pt-[10px]">
-                        <p className="text-[16px] text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
+                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
                           Pay in full
                         </p>
                       </div>
@@ -264,7 +264,7 @@ export default function PayPalCheckout() {
                     </div>
                     <div className="flex flex-1 flex-row items-center self-stretch">
                       <div className="flex flex-1 gap-[4px] h-full items-end min-w-0 pb-px pl-[8px] pt-[10px]">
-                        <p className="text-[16px] text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
+                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
                           Pay in 4
                         </p>
                       </div>
@@ -315,7 +315,7 @@ export default function PayPalCheckout() {
                     </div>
                     <div className="flex flex-1 flex-row items-center self-stretch">
                       <div className="flex flex-1 gap-[4px] h-full items-end min-w-0 pb-px pl-[8px] pt-[10px]">
-                        <p className="text-[16px] text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
+                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
                           Pay Monthly
                         </p>
                       </div>
@@ -374,7 +374,7 @@ export default function PayPalCheckout() {
                       onClick={() => setPayWithExpanded(false)}
                       className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
                     >
-                      <p className="text-[16px] font-bold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                         Pay with
                       </p>
                       <ChevronUp />
@@ -400,11 +400,11 @@ export default function PayPalCheckout() {
                           <Image src={method.image} alt="" width={54} height={36} className="object-cover w-full h-full" />
                         </div>
                         <div className="flex flex-1 flex-col gap-px min-w-0">
-                          <p className="text-[16px] text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{method.name}</p>
+                          <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{method.name}</p>
                           <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>{method.detail}</p>
                         </div>
                         {method.id === 0 && (
-                          <p className="text-[16px] text-[#001435] leading-[21px] shrink-0" style={{ fontFamily: "system-ui, sans-serif" }}>${currentTotal.toFixed(2)}</p>
+                          <p className="text-[16px] font-semibold text-[#001435] leading-[21px] shrink-0" style={{ fontFamily: "system-ui, sans-serif" }}>${currentTotal.toFixed(2)}</p>
                         )}
                       </button>
                     ))}
@@ -417,7 +417,7 @@ export default function PayPalCheckout() {
                           <img alt="" className="absolute inset-0 w-full h-full" src="/images/paypal/icon-add.svg" />
                         </div>
                       </div>
-                      <p className="text-[16px] text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Add card</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Add card</p>
                     </div>
 
                     {/* PayPal Credit */}
@@ -426,7 +426,7 @@ export default function PayPalCheckout() {
                         <Image src="/images/paypal/PayPalCreditCardArt.png" alt="" width={54} height={36} className="object-cover w-full h-full" />
                       </div>
                       <div className="flex flex-1 flex-col gap-px min-w-0">
-                        <p className="text-[16px] text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>PayPal Credit</p>
+                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>PayPal Credit</p>
                         <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                           Subject to credit approval.{" "}
                           <span className="text-[#0070e0] underline">See terms</span>
@@ -449,7 +449,7 @@ export default function PayPalCheckout() {
                   >
                     {/* Label */}
                     <div className="flex flex-col items-start overflow-clip pl-[16px] pr-[12px] py-[14px] shrink-0 w-[96px]">
-                      <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                         Pay with
                       </p>
                     </div>
@@ -467,7 +467,7 @@ export default function PayPalCheckout() {
                         </div>
                       </div>
                       <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-                        <p className="text-[16px] text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>
+                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>
                           {PAYMENT_METHODS[selectedPayment].name}
                         </p>
                         <p className="text-[14px] text-[#545d68] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>
@@ -497,7 +497,7 @@ export default function PayPalCheckout() {
                       onClick={() => setShipToExpanded(false)}
                       className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
                     >
-                      <p className="text-[16px] font-bold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                         Ship to
                       </p>
                       <ChevronUp />
@@ -520,7 +520,7 @@ export default function PayPalCheckout() {
                           <div className="rounded-full border border-[#737b84] shrink-0 size-[24px] bg-white mt-px" />
                         )}
                         <div className="flex flex-1 flex-col gap-px min-w-0">
-                          <p className="text-[16px] text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{addr.name}</p>
+                          <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{addr.name}</p>
                           <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>{addr.address}</p>
                         </div>
                       </button>
@@ -534,7 +534,7 @@ export default function PayPalCheckout() {
                           <img alt="" className="absolute inset-0 w-full h-full" src="/images/paypal/icon-add.svg" />
                         </div>
                       </div>
-                      <p className="text-[16px] text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Add address</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Add address</p>
                     </div>
                   </div>
                 </div>
@@ -548,10 +548,10 @@ export default function PayPalCheckout() {
                     style={{ boxShadow: "inset 0 0.5px 0 0 #cdd0d4, inset 0 -0.5px 0 0 #cdd0d4, inset 0.5px 0 0 0 #e9ecf0, inset -0.5px 0 0 0 #e9ecf0" }}
                   >
                     <div className="flex flex-col items-start overflow-clip pl-[16px] pr-[12px] py-[14px] shrink-0 w-[96px]">
-                      <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Ship to</p>
+                      <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Ship to</p>
                     </div>
                     <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-                      <p className="text-[16px] text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>{ADDRESSES[selectedAddress].name}</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>{ADDRESSES[selectedAddress].name}</p>
                       <p className="text-[14px] text-[#545d68] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>{ADDRESSES[selectedAddress].address}</p>
                     </div>
                     <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0">
@@ -575,7 +575,7 @@ export default function PayPalCheckout() {
                       onClick={() => setDeliveryExpanded(false)}
                       className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
                     >
-                      <p className="text-[16px] font-bold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                         Delivery
                       </p>
                       <ChevronUp />
@@ -598,7 +598,7 @@ export default function PayPalCheckout() {
                           <div className="rounded-full border border-[#737b84] shrink-0 size-[24px] bg-white" />
                         )}
                         <div className="flex flex-1 flex-col gap-px min-w-0">
-                          <p className="text-[16px] text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{opt.label}</p>
+                          <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{opt.label}</p>
                           <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>{opt.sublabel}</p>
                         </div>
                         <p className="text-[14px] text-[#001435] leading-[20px] shrink-0" style={{ fontFamily: "system-ui, sans-serif" }}>{opt.price}</p>
@@ -616,10 +616,10 @@ export default function PayPalCheckout() {
                     style={{ boxShadow: "inset 0 0.5px 0 0 #cdd0d4, inset 0 -0.5px 0 0 #cdd0d4, inset 0.5px 0 0 0 #e9ecf0, inset -0.5px 0 0 0 #e9ecf0" }}
                   >
                     <div className="flex flex-col items-start overflow-clip pl-[16px] pr-[12px] py-[14px] shrink-0 w-[96px]">
-                      <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Delivery</p>
+                      <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Delivery</p>
                     </div>
                     <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-                      <p className="text-[16px] text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>{DELIVERY_OPTIONS[selectedDelivery].label}</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>{DELIVERY_OPTIONS[selectedDelivery].label}</p>
                       <p className="text-[14px] text-[#545d68] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>{DELIVERY_OPTIONS[selectedDelivery].summary}</p>
                     </div>
                     <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0">
@@ -643,7 +643,7 @@ export default function PayPalCheckout() {
                       onClick={() => setContactExpanded(false)}
                       className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
                     >
-                      <p className="text-[16px] font-bold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                         Contact
                       </p>
                       <ChevronUp />
@@ -651,7 +651,7 @@ export default function PayPalCheckout() {
 
                     {/* Contact info */}
                     <div className="flex flex-col gap-px pl-[16px] pr-[16px] py-[14px]">
-                      <p className="text-[16px] font-medium text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>alisha.burgos@gmail.com</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>alisha.burgos@gmail.com</p>
                       <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>(650) 234-5678</p>
                     </div>
                   </div>
@@ -666,10 +666,10 @@ export default function PayPalCheckout() {
                     style={{ boxShadow: "inset 0 0.5px 0 0 #cdd0d4, inset 0 -0.5px 0 0 #cdd0d4, inset 0.5px 0 0 0 #e9ecf0, inset -0.5px 0 0 0 #e9ecf0" }}
                   >
                     <div className="flex flex-col items-start overflow-clip pl-[16px] pr-[12px] py-[14px] shrink-0 w-[96px]">
-                      <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Contact</p>
+                      <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Contact</p>
                     </div>
                     <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-                      <p className="text-[16px] text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>alisha.burgos@gmail.com</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>alisha.burgos@gmail.com</p>
                       <p className="text-[14px] text-[#545d68] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>(650) 234-5678</p>
                     </div>
                     <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0">
@@ -693,7 +693,7 @@ export default function PayPalCheckout() {
                       onClick={() => setOrderExpanded(false)}
                       className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
                     >
-                      <p className="text-[16px] font-bold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                         Order details
                       </p>
                       <ChevronUp />
@@ -702,7 +702,7 @@ export default function PayPalCheckout() {
                     {/* Product 1 */}
                     <div className="flex items-start pl-[16px] pr-[16px] py-[12px] gap-[12px]">
                       <div className="flex flex-1 flex-col gap-px min-w-0">
-                        <p className="text-[14px] font-medium text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Men&apos;s Nike Air Max Flyknit Racer Next Nature</p>
+                        <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Men&apos;s Nike Air Max Flyknit Racer Next Nature</p>
                         <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Black / White <span style={{ color: "#b5b7ba" }}>|</span> 9</p>
                         <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Quantity: 1</p>
                       </div>
@@ -712,7 +712,7 @@ export default function PayPalCheckout() {
                     {/* Product 2 */}
                     <div className="flex items-start pl-[16px] pr-[16px] py-[12px] gap-[12px]">
                       <div className="flex flex-1 flex-col gap-px min-w-0">
-                        <p className="text-[14px] font-medium text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Nike Victori One</p>
+                        <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Nike Victori One</p>
                         <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Black / Black / White <span style={{ color: "#b5b7ba" }}>|</span> W 10 / M 9</p>
                         <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Quantity: 1</p>
                       </div>
@@ -772,11 +772,11 @@ export default function PayPalCheckout() {
                     }}
                   >
                     <div className="flex flex-col items-start overflow-clip pl-[16px] pr-[12px] py-[14px] shrink-0 w-[96px]">
-                      <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Order</p>
+                      <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Order</p>
                     </div>
                     <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
                       <div className="flex gap-[4px] items-end w-full">
-                        <p className="text-[16px] text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>${currentTotal.toFixed(2)}</p>
+                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>${currentTotal.toFixed(2)}</p>
                         <p className="text-[14px] text-[#545d68] leading-[18px] line-through whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>${(265.00 + DELIVERY_OPTIONS[selectedDelivery].cost).toFixed(2)}</p>
                       </div>
                       <p className="text-[14px] text-[#388c00] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>You&apos;re saving $55.00!</p>

@@ -154,7 +154,7 @@ export default function PayIn4() {
                     </div>
                     <div className="flex flex-1 flex-row items-center self-stretch">
                       <div className="flex flex-1 gap-[4px] h-full items-end min-w-0 pb-px pl-[8px] pt-[10px]">
-                        <p className="text-[16px] text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
+                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
                           Pay in full
                         </p>
                       </div>
@@ -191,7 +191,7 @@ export default function PayIn4() {
                     </div>
                     <div className="flex flex-1 flex-row items-center self-stretch">
                       <div className="flex flex-1 gap-[4px] h-full items-end min-w-0 pb-px pl-[8px] pt-[10px]">
-                        <p className="text-[16px] text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
+                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
                           Pay in 4
                         </p>
                       </div>
@@ -241,7 +241,7 @@ export default function PayIn4() {
                     </div>
                     <div className="flex flex-1 flex-row items-center self-stretch">
                       <div className="flex flex-1 gap-[4px] h-full items-end min-w-0 pb-px pl-[8px] pt-[10px]">
-                        <p className="text-[16px] text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
+                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
                           Pay Monthly
                         </p>
                       </div>
@@ -355,12 +355,12 @@ export default function PayIn4() {
                     className="relative flex items-start w-full overflow-clip bg-white border-t border-[#e9ecf0] cursor-pointer text-left"
                   >
                     <div className="flex flex-col items-start overflow-clip pl-[16px] pr-[12px] py-[14px] shrink-0 w-[96px]">
-                      <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                         Ship to
                       </p>
                     </div>
                     <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-                      <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>
                         {ADDRESSES[selectedAddress].name}
                       </p>
                       <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
@@ -378,7 +378,7 @@ export default function PayIn4() {
                       onClick={() => setShipToExpanded(false)}
                       className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
                     >
-                      <p className="text-[16px] font-bold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                         Ship to
                       </p>
                       <ChevronUp />
@@ -401,7 +401,7 @@ export default function PayIn4() {
                           <div className="rounded-full border border-[#737b84] shrink-0 size-[24px] bg-white mt-px" />
                         )}
                         <div className="flex flex-1 flex-col gap-px min-w-0">
-                          <p className="text-[16px] text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{addr.name}</p>
+                          <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{addr.name}</p>
                           <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>{addr.address}</p>
                         </div>
                       </button>
@@ -415,7 +415,7 @@ export default function PayIn4() {
                           <img alt="" className="absolute inset-0 w-full h-full" src="/images/paypal/icon-add.svg" />
                         </div>
                       </div>
-                      <p className="text-[16px] text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Add address</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Add address</p>
                     </div>
                   </div>
                 )}
@@ -427,12 +427,12 @@ export default function PayIn4() {
                     className="relative flex items-start w-full overflow-clip bg-white border-t border-[#e9ecf0] cursor-pointer text-left"
                   >
                     <div className="flex flex-col items-start overflow-clip pl-[16px] pr-[12px] py-[14px] shrink-0 w-[96px]">
-                      <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                         Delivery
                       </p>
                     </div>
                     <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-                      <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>
                         {DELIVERY_OPTIONS[selectedDelivery].label}
                       </p>
                       <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
@@ -450,7 +450,7 @@ export default function PayIn4() {
                       onClick={() => setDeliveryExpanded(false)}
                       className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
                     >
-                      <p className="text-[16px] font-bold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                         Delivery
                       </p>
                       <ChevronUp />
@@ -473,7 +473,7 @@ export default function PayIn4() {
                           <div className="rounded-full border border-[#737b84] shrink-0 size-[24px] bg-white" />
                         )}
                         <div className="flex flex-1 flex-col gap-px min-w-0">
-                          <p className="text-[16px] text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{opt.label}</p>
+                          <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{opt.label}</p>
                           <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>{opt.sublabel}</p>
                         </div>
                         <p className="text-[14px] text-[#001435] leading-[20px] shrink-0" style={{ fontFamily: "system-ui, sans-serif" }}>{opt.price}</p>

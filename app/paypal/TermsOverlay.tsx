@@ -95,7 +95,7 @@ export function TermsOverlay({ onClose, onContinue }: { onClose: () => void; onC
 
         {/* What to know section */}
         <div className="bg-white mx-[20px] rounded-[16px] px-[16px] py-[16px] flex flex-col gap-[12px]" style={{ border: "0.5px solid #e9ecf0" }}>
-          <p className="text-[18px] font-bold text-[#001435] leading-[24px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+          <p className="text-[18px] font-semibold text-[#001435] leading-[24px]" style={{ fontFamily: "system-ui, sans-serif" }}>
             What to know about pre-approval
           </p>
           <ul className="flex flex-col gap-[10px]" style={{ listStyleType: "disc", paddingLeft: "18px" }}>
@@ -109,7 +109,7 @@ export function TermsOverlay({ onClose, onContinue }: { onClose: () => void; onC
 
         {/* How Pay in 4 works section */}
         <div className="bg-white mx-[20px] rounded-[16px] px-[16px] py-[16px] flex flex-col gap-[12px]" style={{ border: "0.5px solid #e9ecf0" }}>
-          <p className="text-[18px] font-bold text-[#001435] leading-[24px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+          <p className="text-[18px] font-semibold text-[#001435] leading-[24px]" style={{ fontFamily: "system-ui, sans-serif" }}>
             How Pay in 4 works
           </p>
           <div className="flex flex-col gap-[12px]">
