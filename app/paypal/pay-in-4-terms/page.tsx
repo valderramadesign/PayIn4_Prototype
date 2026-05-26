@@ -175,18 +175,14 @@ export default function PayIn4Terms() {
 
           {/* CTA footer */}
           <div
-            className="bg-[#f1f2f3] flex flex-col items-center px-[20px] pt-[16px] pb-[24px] shrink-0 w-full"
+            className="bg-[#f1f2f3] flex flex-col items-center gap-[12px] px-[20px] pt-[16px] pb-[24px] shrink-0 w-full"
             style={{ boxShadow: "inset 0 0.5px 0 0 #e0e3e7" }}
           >
+            <button className="text-[14px] text-[#0070e0] leading-[20px] cursor-pointer" style={{ fontFamily: "system-ui, sans-serif" }}>
+              About payment methods
+            </button>
             <button
-              onClick={() => {
-                const params = new URLSearchParams(window.location.search);
-                if (params.get("from") === "pay-in-4") {
-                  router.push("/paypal/pay-in-4");
-                } else {
-                  router.push("/paypal");
-                }
-              }}
+              onClick={() => router.push("/paypal/pay-in-4-apply")}
               className="bg-[#0544b5] rounded-full flex items-center justify-center h-[48px] w-full cursor-pointer hover:bg-[#003da8] transition-colors"
             >
               <span className="text-[16px] font-semibold text-white leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>

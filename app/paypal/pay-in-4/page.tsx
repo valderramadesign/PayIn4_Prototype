@@ -508,7 +508,10 @@ export default function PayIn4() {
 
             {/* Continue button */}
             <div className="flex flex-col items-start px-[20px] py-[12px] shrink-0 w-full">
-              <button className="relative flex gap-[4px] h-[48px] items-center justify-center px-[32px] py-[12px] rounded-[100px] w-full bg-[#0544b5] cursor-pointer hover:bg-[#003da8] transition-colors">
+              <button
+                onClick={() => router.push("/paypal/pay-in-4-apply")}
+                className="relative flex gap-[4px] h-[48px] items-center justify-center px-[32px] py-[12px] rounded-[100px] w-full bg-[#0544b5] cursor-pointer hover:bg-[#003da8] transition-colors"
+              >
                 <p className="text-[16px] text-white font-semibold leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                   Continue
                 </p>
