@@ -2,11 +2,27 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
+
+function formatDob(input: string): string {
+  const digits = input.replace(/\D/g, "").slice(0, 8);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+}
 
 export default function PayIn4Apply() {
   const router = useRouter();
   const [agreed, setAgreed] = useState(false);
+  const [dobValue, setDobValue] = useState("");
+  const [dobFocused, setDobFocused] = useState(false);
+  const dobRef = useRef<HTMLInputElement>(null);
+
+  const dobIsFloating = dobFocused || dobValue.length > 0;
+  const dobIsError = dobValue.length === 10 && dobValue !== "06/01/1980";
+  const dobBorderColor = dobIsError ? "#d50102" : dobFocused ? "#097bf5" : "#737b84";
+  const dobBorderWidth = dobIsError || dobFocused ? 2 : 1;
+  const dobBorderRadius = dobFocused && !dobIsError ? 6 : 4;
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -108,7 +124,7 @@ export default function PayIn4Apply() {
 
               {/* Autopay row */}
               <div className="flex items-center gap-[12px] px-[16px] py-[12px]">
-                <p className="text-[14px] text-[#001435] leading-[20px] shrink-0 w-[56px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                <p className="text-[14px] font-semibold text-[#001435] leading-[20px] shrink-0 w-[56px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                   Autopay
                 </p>
                 <div className="flex flex-1 items-center gap-[10px] min-w-0">
@@ -118,7 +134,7 @@ export default function PayIn4Apply() {
                   </div>
                   {/* Card info */}
                   <div className="flex flex-col gap-[2px] flex-1 min-w-0">
-                    <p className="text-[16px] text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                    <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                       Bank of America Debit
                     </p>
                     <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
@@ -134,18 +150,74 @@ export default function PayIn4Apply() {
             </div>
 
             {/* Date of birth input */}
-            <div className="px-[20px] py-[8px]">
+            <div className="px-[20px] py-[8px] flex flex-col gap-[4px]">
               <div
-                className="flex flex-col gap-[4px] px-[12px] pt-[8px] pb-[10px] rounded-[8px]"
-                style={{ border: "1px solid #cdd0d4" }}
+                className="relative cursor-text bg-white"
+                style={{
+                  height: 64,
+                  border: `${dobBorderWidth}px solid ${dobBorderColor}`,
+                  borderRadius: dobBorderRadius,
+                }}
+                onClick={() => dobRef.current?.focus()}
               >
-                <p className="text-[12px] text-[#545d68] leading-[16px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                {/* Label — centered when resting, floats to top when focused or filled */}
+                <span
+                  className="pointer-events-none absolute left-[12px]"
+                  style={{
+                    top: dobIsFloating ? 8 : "50%",
+                    transform: dobIsFloating ? "none" : "translateY(-50%)",
+                    fontSize: dobIsFloating ? 14 : 16,
+                    lineHeight: dobIsFloating ? "20px" : "24px",
+                    color: "#545d68",
+                    fontFamily: "system-ui, sans-serif",
+                    transition: "top 0.15s ease, font-size 0.15s ease, transform 0.15s ease",
+                    zIndex: 1,
+                  }}
+                >
                   Date of birth
-                </p>
-                <p className="text-[16px] text-[#001435] leading-[22px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                  06/01/1980
-                </p>
+                </span>
+                {/* Value input — sits below the floating label */}
+                <input
+                  ref={dobRef}
+                  type="text"
+                  value={dobValue}
+                  onChange={(e) => setDobValue(formatDob(e.target.value))}
+                  onFocus={() => setDobFocused(true)}
+                  onBlur={() => setDobFocused(false)}
+                  className="absolute"
+                  style={{
+                    bottom: 8,
+                    left: 12,
+                    right: 8,
+                    height: 24,
+                    fontSize: 16,
+                    lineHeight: "24px",
+                    color: "#001435",
+                    fontFamily: "system-ui, sans-serif",
+                    background: "transparent",
+                    border: "none",
+                    outline: "none",
+                    opacity: dobIsFloating ? 1 : 0,
+                    pointerEvents: dobIsFloating ? "auto" : "none",
+                  }}
+                />
               </div>
+              {dobIsError ? (
+                <div className="flex items-center gap-[4px]">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
+                    <path d="M12 4L21 19H3L12 4Z" fill="#d50102" />
+                    <path d="M12 10V14" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                    <circle cx="12" cy="16.5" r="0.75" fill="white" />
+                  </svg>
+                  <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                    Date of birth doesn&apos;t match our records.
+                  </p>
+                </div>
+              ) : (
+                <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                  We&apos;ll use it to verify your identity
+                </p>
+              )}
             </div>
 
             {/* Legal text */}
