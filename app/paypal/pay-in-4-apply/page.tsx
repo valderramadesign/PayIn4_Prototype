@@ -159,7 +159,6 @@ export default function PayIn4Apply() {
                   <button
                     onClick={() => setAutopayExpanded(false)}
                     className="flex items-center justify-between px-[16px] py-[12px] w-full cursor-pointer text-left"
-                    style={{ borderBottom: "0.5px solid #e0e3e7" }}
                   >
                     <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                       Autopay
