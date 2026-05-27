@@ -87,7 +87,7 @@ export default function PayIn4Apply() {
               <div className="flex items-start gap-[12px] px-[16px] py-[12px]" style={{ borderBottom: "0.5px solid #e0e3e7" }}>
                 {/* Avatar */}
                 <div className="shrink-0 w-[48px] h-[48px] rounded-full overflow-hidden bg-[#e8ebee]">
-                  <Image src="/images/paypal/avatar-profile.svg" alt="" width={48} height={48} className="w-full h-full object-cover" />
+                  <Image src="/images/paypal/AvatarImage.png" alt="" width={48} height={48} className="w-full h-full object-cover" />
                 </div>
                 {/* Info */}
                 <div className="flex flex-col gap-[2px] min-w-0">
