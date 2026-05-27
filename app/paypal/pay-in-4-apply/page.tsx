@@ -14,6 +14,7 @@ function formatDob(input: string): string {
 export default function PayIn4Apply() {
   const router = useRouter();
   const [agreed, setAgreed] = useState(false);
+  const [consentError, setConsentError] = useState(false);
   const [dobValue, setDobValue] = useState("");
   const [dobFocused, setDobFocused] = useState(false);
   const dobRef = useRef<HTMLInputElement>(null);
@@ -90,7 +91,7 @@ export default function PayIn4Apply() {
             <div className="mx-[20px] mb-[8px] rounded-[16px] overflow-hidden" style={{ border: "0.5px solid #e0e3e7" }}>
 
               {/* Billing address header */}
-              <div className="flex items-center justify-between px-[16px] pt-[12px] pb-[10px]" style={{ borderBottom: "0.5px solid #e0e3e7" }}>
+              <div className="flex items-center justify-between px-[16px] pt-[12px] pb-[10px]">
                 <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                   Billing address and phone number
                 </p>
@@ -100,7 +101,7 @@ export default function PayIn4Apply() {
               </div>
 
               {/* Address row */}
-              <div className="flex items-start gap-[12px] px-[16px] py-[12px]">
+              <div className="flex items-start gap-[12px] px-[16px] py-[12px]" style={{ borderBottom: "0.5px solid #e0e3e7" }}>
                 {/* Avatar */}
                 <div className="shrink-0 w-[48px] h-[48px] rounded-full overflow-hidden bg-[#e8ebee]">
                   <Image src="/images/paypal/AvatarImage.png" alt="" width={48} height={48} className="w-full h-full object-cover" />
@@ -236,9 +237,9 @@ export default function PayIn4Apply() {
               {/* Checkbox row */}
               <div className="flex items-center gap-[12px] px-[4px] py-[12px]">
                 <button
-                  onClick={() => setAgreed(!agreed)}
+                  onClick={() => { setAgreed(!agreed); setConsentError(false); }}
                   className="shrink-0 w-[24px] h-[24px] rounded-[4px] flex items-center justify-center cursor-pointer"
-                  style={{ border: agreed ? "none" : "1.5px solid #737b84", background: agreed ? "#0070e0" : "white" }}
+                  style={{ border: agreed ? "none" : consentError ? "2px solid #d50102" : "1.5px solid #737b84", background: agreed ? "#0070e0" : "white" }}
                 >
                   {agreed && (
                     <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
@@ -260,6 +261,19 @@ export default function PayIn4Apply() {
                   for autopay.
                 </p>
               </div>
+              {/* Consent error message */}
+              {consentError && (
+                <div className="flex items-center gap-[4px] px-[4px] pt-[4px]">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
+                    <path d="M12 4L21 19H3L12 4Z" fill="#d50102" />
+                    <path d="M12 10V14" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                    <circle cx="12" cy="16.5" r="0.75" fill="white" />
+                  </svg>
+                  <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                    Please agree to continue
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -272,6 +286,7 @@ export default function PayIn4Apply() {
               About payment methods
             </button>
             <button
+              onClick={() => { if (!agreed) setConsentError(true); }}
               className="bg-[#0544b5] rounded-full flex items-center justify-center h-[48px] w-full cursor-pointer hover:bg-[#003da8] transition-colors"
             >
               <span className="text-[16px] font-semibold text-white leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
