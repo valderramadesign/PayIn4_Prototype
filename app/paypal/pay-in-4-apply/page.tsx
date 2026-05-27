@@ -15,6 +15,7 @@ export default function PayIn4Apply() {
   const router = useRouter();
   const [agreed, setAgreed] = useState(false);
   const [consentError, setConsentError] = useState(false);
+  const [autopayExpanded, setAutopayExpanded] = useState(false);
   const [dobValue, setDobValue] = useState("");
   const [dobFocused, setDobFocused] = useState(false);
   const dobRef = useRef<HTMLInputElement>(null);
@@ -124,30 +125,77 @@ export default function PayIn4Apply() {
               </div>
 
               {/* Autopay row */}
-              <div className="flex items-center gap-[12px] px-[16px] py-[12px]">
-                <p className="text-[14px] font-semibold text-[#001435] leading-[20px] shrink-0 w-[56px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                  Autopay
-                </p>
-                <div className="flex flex-1 items-center gap-[10px] min-w-0">
-                  {/* Card art */}
-                  <div className="h-[36px] rounded-[4px] shrink-0 w-[54px] overflow-clip">
-                    <Image src="/images/paypal/BankOfAmericaCardArt.png" alt="" width={54} height={36} className="object-cover w-full h-full" />
+              {!autopayExpanded ? (
+                <button
+                  onClick={() => setAutopayExpanded(true)}
+                  className="flex items-center gap-[12px] px-[16px] py-[12px] w-full text-left cursor-pointer bg-white"
+                >
+                  <p className="text-[14px] font-semibold text-[#001435] leading-[20px] shrink-0 w-[56px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                    Autopay
+                  </p>
+                  <div className="flex flex-1 items-center gap-[10px] min-w-0">
+                    {/* Card art */}
+                    <div className="h-[36px] rounded-[4px] shrink-0 w-[54px] overflow-clip">
+                      <Image src="/images/paypal/BankOfAmericaCardArt.png" alt="" width={54} height={36} className="object-cover w-full h-full" />
+                    </div>
+                    {/* Card info */}
+                    <div className="flex flex-col gap-[2px] flex-1 min-w-0">
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                        Bank of America Debit
+                      </p>
+                      <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                        Debit ••7485
+                      </p>
+                    </div>
+                    {/* Down Chevron */}
+                    <svg className="shrink-0" width="12" height="7" viewBox="0 0 12 7" fill="none">
+                      <path d="M1 1L6 6L11 1" stroke="#545D68" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                   </div>
-                  {/* Card info */}
-                  <div className="flex flex-col gap-[2px] flex-1 min-w-0">
-                    <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                      Bank of America Debit
+                </button>
+              ) : (
+                <div className="flex flex-col w-full bg-white">
+                  {/* Header — click to collapse */}
+                  <button
+                    onClick={() => setAutopayExpanded(false)}
+                    className="flex items-center justify-between px-[16px] py-[12px] w-full cursor-pointer text-left"
+                    style={{ borderBottom: "0.5px solid #e0e3e7" }}
+                  >
+                    <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                      Autopay
                     </p>
-                    <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                      Debit ••7485
-                    </p>
-                  </div>
-                  {/* Chevron */}
-                  <svg className="shrink-0" width="12" height="7" viewBox="0 0 12 7" fill="none">
-                    <path d="M1 1L6 6L11 1" stroke="#545D68" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                    {/* Up Chevron */}
+                    <svg className="shrink-0 rotate-180" width="12" height="7" viewBox="0 0 12 7" fill="none">
+                      <path d="M1 1L6 6L11 1" stroke="#545D68" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+
+                  {/* Single selected Bank of America Debit option */}
+                  <button
+                    onClick={() => setAutopayExpanded(false)}
+                    className="w-full flex items-center px-[16px] py-[12px] gap-[12px] cursor-pointer text-left"
+                  >
+                    {/* Radio selected */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img alt="" className="w-[24px] h-[24px] shrink-0" src="/images/paypal/radio-selected.svg" />
+                    
+                    {/* Card art */}
+                    <div className="h-[36px] rounded-[4px] shrink-0 w-[54px] overflow-clip">
+                      <Image src="/images/paypal/BankOfAmericaCardArt.png" alt="" width={54} height={36} className="object-cover w-full h-full" />
+                    </div>
+
+                    {/* Card details */}
+                    <div className="flex flex-1 flex-col gap-px min-w-0">
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                        Bank of America Debit
+                      </p>
+                      <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                        Debit ••7485
+                      </p>
+                    </div>
+                  </button>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Date of birth input */}
