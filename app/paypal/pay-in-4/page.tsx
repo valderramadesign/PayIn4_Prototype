@@ -254,7 +254,7 @@ export default function PayIn4() {
                   </div>
                 </div>
                 <div
-                  className="relative flex gap-[12px] h-[44px] items-center pb-[12px] pt-[10px] px-[12px] shrink-0 w-full border-t border-[#cdd0d4]"
+                  className="relative flex gap-[12px] h-[44px] items-center pb-[12px] pt-[10px] px-[12px] shrink-0 w-full"
                 >
                   <div className="flex flex-1 min-w-0 h-[24px] relative" />
                   <span

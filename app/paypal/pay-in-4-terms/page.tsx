@@ -56,10 +56,13 @@ export default function PayIn4Terms() {
               onClick={() => {
                 const params = new URLSearchParams(window.location.search);
                 const fromVal = params.get("from");
-                if (fromVal === "pay-in-4") {
+                const isApproved = params.get("approved") === "true";
+                if (fromVal === "pay-in-4-approved") {
+                  router.push("/paypal/pay-in-4-approved?approved=true");
+                } else if (fromVal === "pay-in-4") {
                   router.push("/paypal/pay-in-4");
                 } else {
-                  router.push("/paypal");
+                  router.push(isApproved ? "/paypal?approved=true" : "/paypal");
                 }
               }}
               className="flex items-center justify-center h-full px-[20px] shrink-0 cursor-pointer"

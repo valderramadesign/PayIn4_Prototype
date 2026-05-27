@@ -70,7 +70,7 @@ export default function PayIn4Apply() {
             </div>
             {/* Cancel */}
             <button
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/paypal")}
               className="flex items-center justify-end h-full px-[20px] shrink-0 w-[74px] ml-auto cursor-pointer"
             >
               <span className="text-[17px] text-[#0070e0] leading-none" style={{ fontFamily: "system-ui, sans-serif" }}>
@@ -344,6 +344,9 @@ export default function PayIn4Apply() {
                 if (dobValue !== "06/01/1980") {
                   setDobError(true);
                   hasError = true;
+                }
+                if (!hasError) {
+                  router.push("/paypal/pay-in-4-approved");
                 }
               }}
               className="bg-[#0544b5] rounded-full flex items-center justify-center h-[48px] w-full cursor-pointer hover:bg-[#003da8] transition-colors"

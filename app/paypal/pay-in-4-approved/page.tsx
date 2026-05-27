@@ -26,112 +26,53 @@ function ChevronUp() {
   );
 }
 
-function ListRow({
-  label,
-  children,
-  roundedTop = false,
-  roundedBottom = false,
-}: {
-  label: string;
-  children: React.ReactNode;
-  roundedTop?: boolean;
-  roundedBottom?: boolean;
-}) {
-  const radiusClass = [
-    roundedTop ? "rounded-tl-[16px] rounded-tr-[16px]" : "",
-    roundedBottom ? "rounded-bl-[16px] rounded-br-[16px]" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  return (
-    <div className="flex items-start px-[20px] w-full shrink-0">
-      <div className="flex-1 min-w-0">
-        <div
-          className={`relative flex items-start w-full overflow-clip bg-white ${radiusClass}`}
-          style={{
-            boxShadow: roundedTop && roundedBottom
-              ? "inset 0 0.5px 0 0 #cdd0d4, inset 0 -0.5px 0 0 #cdd0d4, inset 0.5px 0 0 0 #e9ecf0, inset -0.5px 0 0 0 #e9ecf0"
-              : roundedTop
-              ? "inset 0 -0.5px 0 0 #cdd0d4"
-              : roundedBottom
-              ? "inset 0 0.5px 0 0 #cdd0d4, inset 0 -0.5px 0 0 #cdd0d4, inset 0.5px 0 0 0 #e9ecf0, inset -0.5px 0 0 0 #e9ecf0"
-              : "inset 0 0.5px 0 0 #cdd0d4, inset 0 -0.5px 0 0 #cdd0d4, inset 0.5px 0 0 0 #e9ecf0, inset -0.5px 0 0 0 #e9ecf0",
-          }}
-        >
-          {/* Label column */}
-          <div className="flex flex-col items-start overflow-clip pl-[16px] pr-[12px] py-[14px] shrink-0 w-[96px]">
-            <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-              {label}
-            </p>
-          </div>
-
-          {/* Content column */}
-          <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-            {children}
-          </div>
-
-          {/* Chevron */}
-          <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0">
-            <ChevronDown />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const PAYMENT_METHODS = [
-  { id: 0, name: "Chase Sapphire Visa", detail: "Credit ••3339", image: "/images/paypal/card-thumbnail.png" },
-  { id: 1, name: "Bank of America", detail: "Debit ••7485", image: "/images/paypal/BankOfAmericaCardArt.png" },
-  { id: 2, name: "PayPal balance", detail: "Use $20.00", image: "/images/paypal/PayPalBalanceCardArt.png" },
-  { id: 3, name: "PayPal Rewards", detail: "Redeem 500 pts ($5.00)", image: "/images/paypal/PayPalRewardsCardArt.png" },
-];
-
-const ADDRESSES = [
-  { name: "Alisha Burgos", address: "208 Copperhead Road, Hartford, CT 95821" },
-  { name: "Alisha Burgos", address: "123 Relington Street, Apt 3, Los Angeles, CA 90210" },
-  { name: "Alisha Burgos", address: "456 Doral Street, Miami, FL 33156" },
-  { name: "Isabella Harrell", address: "83 NW. Carpenter Street, Apt 378, Brooklyn, NY 11235" },
-  { name: "Ewan McPherson", address: "725 Southampton Ave, Apt 41, Brooklyn, NY 11256" },
-];
-
 const DELIVERY_OPTIONS = [
   { label: "Standard", sublabel: "5-7 business days", price: "$0.00", cost: 0.00, summary: "5-7 business days, $0.00" },
   { label: "USPS 2-Day Select", sublabel: "3-5 business days", price: "$5.95", cost: 5.95, summary: "3-5 business days, $5.95" },
   { label: "Express 1 Day Overnight", sublabel: "1-2 business days", price: "$20.25", cost: 20.25, summary: "1-2 business days, $20.25" },
 ];
 
-export default function PayPalCheckout() {
+export default function PayIn4Approved() {
   const router = useRouter();
-  const [isApproved, setIsApproved] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("approved") === "true") {
-        setIsApproved(true);
-      }
-    }
-  }, []);
   const carouselRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
   const dragScrollLeft = useRef(0);
   const [dragged, setDragged] = useState(false);
-  const [payWithExpanded, setPayWithExpanded] = useState(false);
+  const [autopayExpanded, setAutopayExpanded] = useState(false);
   const [shipToExpanded, setShipToExpanded] = useState(false);
   const [deliveryExpanded, setDeliveryExpanded] = useState(false);
+  const [selectedDelivery, setSelectedDelivery] = useState(0);
   const [contactExpanded, setContactExpanded] = useState(false);
   const [orderExpanded, setOrderExpanded] = useState(false);
-  const [selectedPayment, setSelectedPayment] = useState(0);
-  const [selectedAddress, setSelectedAddress] = useState(0);
-  const [selectedDelivery, setSelectedDelivery] = useState(0);
+  const [toastVisible, setToastVisible] = useState(true);
+  const [toastFading, setToastFading] = useState(false);
+  const [pendingDelivery, setPendingDelivery] = useState<number | null>(null);
+  const [sheetIn, setSheetIn] = useState(false);
 
   const currentTotal = 210.00 + DELIVERY_OPTIONS[selectedDelivery].cost;
+  const currentInstallment = currentTotal / 4;
 
-  function scrollRight() {
-    carouselRef.current?.scrollBy({ left: 200, behavior: "smooth" });
+  useEffect(() => {
+    const fadeTimer = setTimeout(() => setToastFading(true), 4500);
+    const hideTimer = setTimeout(() => setToastVisible(false), 5200);
+    return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer); };
+  }, []);
+
+  function openSheet(i: number) {
+    setPendingDelivery(i);
+    setSheetIn(false);
+    requestAnimationFrame(() => requestAnimationFrame(() => setSheetIn(true)));
+  }
+
+  function closeSheet() {
+    setSheetIn(false);
+    setTimeout(() => setPendingDelivery(null), 300);
+  }
+
+  function confirmDelivery() {
+    if (pendingDelivery !== null) setSelectedDelivery(pendingDelivery);
+    closeSheet();
   }
 
   function onMouseDown(e: React.MouseEvent) {
@@ -167,7 +108,7 @@ export default function PayPalCheckout() {
         </div>
       </div>
 
-      {/* Dark background with radial gradient */}
+      {/* Dark background */}
       <div
         className="flex-1 flex items-center justify-center py-[60px]"
         style={{
@@ -181,7 +122,6 @@ export default function PayPalCheckout() {
         >
           {/* Nav header */}
           <div className="bg-[#f1f2f3] flex items-end h-[60px] overflow-clip shrink-0 w-full">
-            {/* Close */}
             <button
               onClick={() => router.push("/")}
               className="flex flex-col items-start justify-center pb-[12px] pt-[16px] px-[20px] shrink-0 w-[74px] cursor-pointer"
@@ -189,16 +129,12 @@ export default function PayPalCheckout() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img alt="Close" className="w-[16px] h-[16px]" src="/images/paypal/close-color.svg" />
             </button>
-
-            {/* PayPal wordmark — centered */}
             <div className="flex flex-1 items-center justify-center pb-[8px] pt-[16px] h-[52px]">
               <div className="relative h-[24px] w-[83px]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img alt="PayPal" className="absolute inset-0 w-full h-full object-contain" src="/images/paypal/paypal-wordmark-color.svg" />
               </div>
             </div>
-
-            {/* Avatar */}
             <div className="flex items-center justify-end pb-[8px] pr-[20px] pt-[12px] shrink-0 w-[74px]">
               <div className="rounded-full overflow-clip shrink-0 w-[32px] h-[32px]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -218,26 +154,17 @@ export default function PayPalCheckout() {
               onMouseUp={onMouseUp}
               onMouseLeave={onMouseUp}
             >
-              {/* Pay in full — selected */}
-              <div
-                className="bg-white flex flex-col items-start overflow-clip rounded-[16px] shrink-0 w-[128px]"
-                style={{
-                  border: "1.5px solid #097FF5",
-                  boxShadow: "0px 0px 8px 0px rgba(0,0,0,0.04)",
-                }}
+              {/* Pay in full — unselected */}
+              <button
+                onClick={() => { if (!dragged) router.push("/paypal?approved=true"); }}
+                className="bg-white flex flex-col items-start overflow-clip rounded-[16px] shrink-0 w-[128px] text-left cursor-pointer"
+                style={{ border: "1px solid #e9ecf0", boxShadow: "0px 0px 8px 0px rgba(0,0,0,0.04)" }}
               >
                 <div className="flex flex-col gap-[2px] items-start pb-[8px] shrink-0 w-full">
                   <div className="flex items-center shrink-0 w-full">
-                    {/* Radio button — checked */}
                     <div className="flex items-start pl-[10px] pt-[10px] shrink-0">
                       <div className="relative rounded-[4px] shrink-0 size-[18px]">
                         <div className="absolute inset-0 rounded-full bg-white border border-[#929496]" />
-                        <div className="absolute inset-[-16.67%]">
-                          <div className="absolute inset-[12.5%]">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img alt="" className="absolute inset-0 w-full h-full" src="/images/paypal/checkmark-color.svg" />
-                          </div>
-                        </div>
                       </div>
                     </div>
                     <div className="flex flex-1 flex-row items-center self-stretch">
@@ -254,30 +181,24 @@ export default function PayPalCheckout() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </button>
 
-              {/* Pay in 4 */}
-              <button
-                onClick={() => {
-                  if (!dragged) {
-                    if (isApproved) {
-                      router.push("/paypal/pay-in-4-approved?approved=true");
-                    } else {
-                      router.push("/paypal/pay-in-4");
-                    }
-                  }
-                }}
-                className="bg-white flex flex-col items-start overflow-clip rounded-[16px] shrink-0 w-[192px] text-left cursor-pointer"
-                style={{
-                  border: "1px solid #e9ecf0",
-                  boxShadow: "0px 0px 8px 0px rgba(0,0,0,0.04)",
-                }}
+              {/* Pay in 4 — selected */}
+              <div
+                className="bg-white flex flex-col items-start overflow-clip rounded-[16px] shrink-0 w-[192px]"
+                style={{ border: "1.5px solid #097FF5", boxShadow: "0px 0px 8px 0px rgba(0,0,0,0.04)" }}
               >
                 <div className="flex flex-col gap-[2px] items-start pb-[8px] shrink-0 w-full">
                   <div className="flex items-center shrink-0 w-full">
                     <div className="flex items-start pl-[10px] pt-[10px] shrink-0">
                       <div className="relative rounded-[4px] shrink-0 size-[18px]">
                         <div className="absolute inset-0 rounded-full bg-white border border-[#929496]" />
+                        <div className="absolute inset-[-16.67%]">
+                          <div className="absolute inset-[12.5%]">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img alt="" className="absolute inset-0 w-full h-full" src="/images/paypal/checkmark-color.svg" />
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div className="flex flex-1 flex-row items-center self-stretch">
@@ -290,42 +211,33 @@ export default function PayPalCheckout() {
                   </div>
                   <div className="flex flex-col items-start px-[12px] shrink-0 w-full">
                     <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                      4 interest-free payments of ${(currentTotal / 4).toFixed(2)}. No late fees.
+                      4 interest-free payments of ${currentInstallment.toFixed(2)}. No late fees.
                     </p>
                   </div>
                 </div>
-                {/* Pre-approved + Terms footer */}
-                <div
-                  className="relative flex gap-[12px] h-[44px] items-center pb-[12px] pt-[10px] px-[12px] shrink-0 w-full border-t border-[#cdd0d4]"
-                >
+                <div className="relative flex gap-[12px] h-[44px] items-center pb-[12px] pt-[10px] px-[12px] shrink-0 w-full border-t border-[#cdd0d4]">
                   <div className="flex flex-1 flex-col items-start min-w-0 relative">
                     <span
                       className="bg-[rgba(209,229,249,0.9)] text-[14px] text-[#001435] leading-[20px] px-[8px] py-[2px] rounded-[6px] whitespace-nowrap"
                       style={{ fontFamily: "system-ui, sans-serif" }}
                     >
-                      {isApproved ? "Approved" : "Pre-approved"}
+                      Approved
                     </span>
                   </div>
                   <span
                     className="text-[14px] text-[#0070e0] leading-[20px] underline shrink-0 relative whitespace-nowrap cursor-pointer hover:text-[#004e9e] transition-colors"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      router.push(isApproved ? "/paypal/pay-in-4-terms?from=pay-in-4-approved&approved=true" : "/paypal/pay-in-4-terms");
-                    }}
+                    onClick={(e) => { if (!dragged) { e.stopPropagation(); router.push("/paypal/pay-in-4-terms?from=pay-in-4"); } }}
                     style={{ fontFamily: "system-ui, sans-serif" }}
                   >
                     Terms
                   </span>
                 </div>
-              </button>
+              </div>
 
-              {/* Pay Monthly */}
+              {/* Pay Monthly — unselected */}
               <div
                 className="bg-white flex flex-col items-start overflow-clip rounded-[16px] shrink-0 w-[192px]"
-                style={{
-                  border: "1px solid #e9ecf0",
-                  boxShadow: "0px 0px 8px 0px rgba(0,0,0,0.04)",
-                }}
+                style={{ border: "1px solid #e9ecf0", boxShadow: "0px 0px 8px 0px rgba(0,0,0,0.04)" }}
               >
                 <div className="flex flex-col gap-[2px] items-start pb-[8px] shrink-0 w-full">
                   <div className="flex items-center shrink-0 w-full">
@@ -348,115 +260,45 @@ export default function PayPalCheckout() {
                     </p>
                   </div>
                 </div>
-                <div
-                  className="relative flex gap-[12px] h-[44px] items-center pb-[12px] pt-[10px] px-[12px] shrink-0 w-full"
-                >
+                <div className="relative flex gap-[12px] h-[44px] items-center pb-[12px] pt-[10px] px-[12px] shrink-0 w-full">
                   <div className="flex flex-1 min-w-0 h-[24px] relative" />
-                  <span
-                    className="text-[14px] text-[#0070e0] leading-[20px] underline shrink-0 relative whitespace-nowrap"
-                    style={{ fontFamily: "system-ui, sans-serif" }}
-                  >
+                  <span className="text-[14px] text-[#0070e0] leading-[20px] underline shrink-0 relative whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
                     Terms
                   </span>
                 </div>
               </div>
             </div>
-
-            {/* Right arrow — CarouselArrows component */}
-            <div className="absolute right-[20px] top-1/2 -translate-y-1/2 mt-[5.5px]">
-              <button onClick={scrollRight} className="bg-[rgba(255,255,255,0.9)] border border-[#545d68] flex flex-col items-start p-[8px] rounded-[20px] drop-shadow-[0px_0px_4px_rgba(0,0,0,0.04)] cursor-pointer">
-                {/* ChevronRight — 24px icon, arrow color fill rotated 90° within inset bounds */}
-                <div className="relative shrink-0 size-[24px]">
-                  <div className="absolute flex items-center justify-center" style={{ inset: "17.08% 31.26%", containerType: "size" }}>
-                    <div className="flex-none rotate-90" style={{ height: "100cqw", width: "100cqh" }}>
-                      <div className="relative size-full">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img alt="" className="absolute block inset-0 max-w-none size-full" src="/images/paypal/chevron-right-arrow.svg" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            </div>
           </div>
 
           {/* Accordion list rows */}
           <div className="flex flex-1 flex-col items-start min-h-0 overflow-y-auto pb-[12px] w-full" style={{ boxShadow: "0px 0px 4px rgba(0,0,0,0.04)" }}>
-            {/* Pay with — collapsed or expanded */}
-            {payWithExpanded ? (
+
+            {/* Autopay */}
+            {autopayExpanded ? (
               <div className="flex items-start pt-[12px] px-[20px] w-full">
                 <div className="flex-1 min-w-0">
-                  <div
-                    className="relative flex flex-col w-full bg-white"
-                    style={{ border: "0.5px solid #e9ecf0" }}
-                  >
-                    {/* Header — click to collapse */}
+                  <div className="relative flex flex-col w-full bg-white" style={{ border: "0.5px solid #e9ecf0" }}>
                     <button
-                      onClick={() => setPayWithExpanded(false)}
+                      onClick={() => setAutopayExpanded(false)}
                       className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
                     >
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                        Pay with
-                      </p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Autopay</p>
                       <ChevronUp />
                     </button>
-
-                    {/* Dynamic payment methods */}
-                    {PAYMENT_METHODS.map((method) => (
-                      <button
-                        key={method.id}
-                        onClick={() => {
-                          setSelectedPayment(method.id);
-                          setPayWithExpanded(false);
-                        }}
-                        className="w-full flex items-center pl-[16px] pr-[16px] py-[12px] gap-[12px] cursor-pointer text-left"
-                      >
-                        {selectedPayment === method.id ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img alt="" className="w-[24px] h-[24px] shrink-0" src="/images/paypal/radio-selected.svg" />
-                        ) : (
-                          <div className="rounded-full border border-[#737b84] shrink-0 size-[24px] bg-white" />
-                        )}
-                        <div className="h-[36px] rounded-[4px] shrink-0 w-[54px] overflow-clip">
-                          <Image src={method.image} alt="" width={54} height={36} className="object-cover w-full h-full" />
-                        </div>
-                        <div className="flex flex-1 flex-col gap-px min-w-0">
-                          <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{method.name}</p>
-                          <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>{method.detail}</p>
-                        </div>
-                        {method.id === 0 && (
-                          <p className="text-[16px] font-semibold text-[#001435] leading-[21px] shrink-0" style={{ fontFamily: "system-ui, sans-serif" }}>${currentTotal.toFixed(2)}</p>
-                        )}
-                      </button>
-                    ))}
-
-                    {/* Add card */}
-                    <div className="flex items-center pl-[16px] pr-[16px] py-[12px] gap-[12px]">
-                      <div className="relative shrink-0 size-[24px]">
-                        <div className="absolute" style={{ inset: "16.67%" }}>
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img alt="" className="absolute inset-0 w-full h-full" src="/images/paypal/icon-add.svg" />
-                        </div>
-                      </div>
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Add card</p>
-                    </div>
-
-                    {/* PayPal Credit */}
-                    <div className="flex items-start pl-[16px] pr-[16px] py-[12px] gap-[12px]">
+                    <button
+                      onClick={() => setAutopayExpanded(false)}
+                      className="w-full flex items-center pl-[16px] pr-[16px] py-[12px] gap-[12px] cursor-pointer text-left"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img alt="" className="w-[24px] h-[24px] shrink-0" src="/images/paypal/radio-selected.svg" />
                       <div className="h-[36px] rounded-[4px] shrink-0 w-[54px] overflow-clip">
-                        <Image src="/images/paypal/PayPalCreditCardArt.png" alt="" width={54} height={36} className="object-cover w-full h-full" />
+                        <Image src="/images/paypal/BankOfAmericaCardArt.png" alt="" width={54} height={36} className="object-cover w-full h-full" />
                       </div>
                       <div className="flex flex-1 flex-col gap-px min-w-0">
-                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>PayPal Credit</p>
-                        <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                          Subject to credit approval.{" "}
-                          <span className="text-[#0070e0] underline">See terms</span>
-                        </p>
+                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Bank of America Debit</p>
+                        <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Debit ••7485</p>
                       </div>
-                      <button className="text-[14px] text-[#0070e0] leading-[20px] shrink-0 whitespace-nowrap cursor-pointer" style={{ fontFamily: "system-ui, sans-serif" }}>
-                        Apply
-                      </button>
-                    </div>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -464,39 +306,24 @@ export default function PayPalCheckout() {
               <div className="flex items-start pt-[12px] px-[20px] shrink-0 w-full">
                 <div className="flex-1 min-w-0">
                   <button
-                    onClick={() => setPayWithExpanded(true)}
+                    onClick={() => setAutopayExpanded(true)}
                     className="relative flex items-start w-full overflow-clip bg-white rounded-tl-[16px] rounded-tr-[16px] cursor-pointer text-left"
                     style={{ boxShadow: "inset 0 -0.5px 0 0 #cdd0d4", border: "0.5px solid #e9ecf0" }}
                   >
-                    {/* Label */}
                     <div className="flex flex-col items-start overflow-clip pl-[16px] pr-[12px] py-[14px] shrink-0 w-[96px]">
-                      <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                        Pay with
-                      </p>
+                      <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Autopay</p>
                     </div>
-                    {/* Content */}
                     <div className="flex flex-1 items-start min-w-0 overflow-clip">
                       <div className="flex flex-col items-start pr-[12px] pt-[17px] shrink-0">
                         <div className="h-[36px] rounded-[4px] shrink-0 w-[54px] overflow-clip">
-                          <Image
-                            src={PAYMENT_METHODS[selectedPayment].image}
-                            alt=""
-                            width={54}
-                            height={36}
-                            className="object-cover w-full h-full"
-                          />
+                          <Image src="/images/paypal/BankOfAmericaCardArt.png" alt="" width={54} height={36} className="object-cover w-full h-full" />
                         </div>
                       </div>
                       <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>
-                          {PAYMENT_METHODS[selectedPayment].name}
-                        </p>
-                        <p className="text-[14px] text-[#545d68] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>
-                          {PAYMENT_METHODS[selectedPayment].detail}
-                        </p>
+                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>Bank of America Debit</p>
+                        <p className="text-[14px] text-[#545d68] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>Debit ••7485</p>
                       </div>
                     </div>
-                    {/* Chevron */}
                     <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0">
                       <ChevronDown />
                     </div>
@@ -505,57 +332,18 @@ export default function PayPalCheckout() {
               </div>
             )}
 
-            {/* Ship to — collapsed or expanded */}
+            {/* Ship to */}
             {shipToExpanded ? (
               <div className="flex items-start px-[20px] w-full">
                 <div className="flex-1 min-w-0">
-                  <div
-                    className="relative flex flex-col w-full bg-white"
-                    style={{ border: "0.5px solid #e9ecf0" }}
-                  >
-                    {/* Header — click to collapse */}
-                    <button
-                      onClick={() => setShipToExpanded(false)}
-                      className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
-                    >
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                        Ship to
-                      </p>
+                  <div className="relative flex flex-col w-full bg-white" style={{ border: "0.5px solid #e9ecf0" }}>
+                    <button onClick={() => setShipToExpanded(false)} className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer">
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Ship to</p>
                       <ChevronUp />
                     </button>
-
-                    {/* Address rows */}
-                    {ADDRESSES.map((addr, i) => (
-                      <button
-                        key={i}
-                        onClick={() => {
-                          setSelectedAddress(i);
-                          setShipToExpanded(false);
-                        }}
-                        className="w-full flex items-start pl-[16px] pr-[16px] py-[12px] gap-[12px] cursor-pointer text-left"
-                      >
-                        {selectedAddress === i ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img alt="" className="w-[24px] h-[24px] shrink-0 mt-px" src="/images/paypal/radio-selected.svg" />
-                        ) : (
-                          <div className="rounded-full border border-[#737b84] shrink-0 size-[24px] bg-white mt-px" />
-                        )}
-                        <div className="flex flex-1 flex-col gap-px min-w-0">
-                          <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>{addr.name}</p>
-                          <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>{addr.address}</p>
-                        </div>
-                      </button>
-                    ))}
-
-                    {/* Add address */}
-                    <div className="flex items-center pl-[16px] pr-[16px] py-[12px] gap-[12px]">
-                      <div className="relative shrink-0 size-[24px]">
-                        <div className="absolute" style={{ inset: "16.67%" }}>
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img alt="" className="absolute inset-0 w-full h-full" src="/images/paypal/icon-add.svg" />
-                        </div>
-                      </div>
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Add address</p>
+                    <div className="flex flex-col gap-px pl-[16px] pr-[16px] py-[14px]">
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Alisha Burgos</p>
+                      <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>208 Copperhead Road, Hartford, CT 95821</p>
                     </div>
                   </div>
                 </div>
@@ -572,43 +360,34 @@ export default function PayPalCheckout() {
                       <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Ship to</p>
                     </div>
                     <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>{ADDRESSES[selectedAddress].name}</p>
-                      <p className="text-[14px] text-[#545d68] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>{ADDRESSES[selectedAddress].address}</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>Alisha Burgos</p>
+                      <p className="text-[14px] text-[#545d68] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>208 Copperhead Road, Hartford, CT 95821</p>
                     </div>
-                    <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0">
-                      <ChevronDown />
-                    </div>
+                    <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0"><ChevronDown /></div>
                   </button>
                 </div>
               </div>
             )}
 
-            {/* Delivery — collapsed or expanded */}
+            {/* Delivery */}
             {deliveryExpanded ? (
               <div className="flex items-start px-[20px] w-full">
                 <div className="flex-1 min-w-0">
-                  <div
-                    className="relative flex flex-col w-full bg-white"
-                    style={{ border: "0.5px solid #e9ecf0" }}
-                  >
-                    {/* Header — click to collapse */}
-                    <button
-                      onClick={() => setDeliveryExpanded(false)}
-                      className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
-                    >
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                        Delivery
-                      </p>
+                  <div className="relative flex flex-col w-full bg-white" style={{ border: "0.5px solid #e9ecf0" }}>
+                    <button onClick={() => setDeliveryExpanded(false)} className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer">
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Delivery</p>
                       <ChevronUp />
                     </button>
-
-                    {/* Delivery option rows */}
                     {DELIVERY_OPTIONS.map((opt, i) => (
                       <button
                         key={i}
                         onClick={() => {
-                          setSelectedDelivery(i);
                           setDeliveryExpanded(false);
+                          if (i > 0) {
+                            openSheet(i);
+                          } else {
+                            setSelectedDelivery(i);
+                          }
                         }}
                         className="w-full flex items-center pl-[16px] pr-[16px] py-[12px] gap-[12px] cursor-pointer text-left"
                       >
@@ -643,36 +422,23 @@ export default function PayPalCheckout() {
                       <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>{DELIVERY_OPTIONS[selectedDelivery].label}</p>
                       <p className="text-[14px] text-[#545d68] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>{DELIVERY_OPTIONS[selectedDelivery].summary}</p>
                     </div>
-                    <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0">
-                      <ChevronDown />
-                    </div>
+                    <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0"><ChevronDown /></div>
                   </button>
                 </div>
               </div>
             )}
 
-            {/* Contact — collapsed or expanded */}
+            {/* Contact */}
             {contactExpanded ? (
               <div className="flex items-start px-[20px] w-full">
                 <div className="flex-1 min-w-0">
-                  <div
-                    className="relative flex flex-col w-full bg-white"
-                    style={{ border: "0.5px solid #e9ecf0" }}
-                  >
-                    {/* Header — click to collapse */}
-                    <button
-                      onClick={() => setContactExpanded(false)}
-                      className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
-                    >
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                        Contact
-                      </p>
+                  <div className="relative flex flex-col w-full bg-white" style={{ border: "0.5px solid #e9ecf0" }}>
+                    <button onClick={() => setContactExpanded(false)} className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer">
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Contact</p>
                       <ChevronUp />
                     </button>
-
-                    {/* Contact info */}
                     <div className="flex flex-col gap-px pl-[16px] pr-[16px] py-[14px]">
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>alisha.burgos@gmail.com</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>grace.hamilton@gmail.com</p>
                       <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>(650) 234-5678</p>
                     </div>
                   </div>
@@ -690,37 +456,24 @@ export default function PayPalCheckout() {
                       <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Contact</p>
                     </div>
                     <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>alisha.burgos@gmail.com</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>grace.hamilton@gmail.com</p>
                       <p className="text-[14px] text-[#545d68] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>(650) 234-5678</p>
                     </div>
-                    <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0">
-                      <ChevronDown />
-                    </div>
+                    <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0"><ChevronDown /></div>
                   </button>
                 </div>
               </div>
             )}
 
-            {/* Order — collapsed or expanded */}
+            {/* Order */}
             {orderExpanded ? (
               <div className="flex items-start px-[20px] w-full">
                 <div className="flex-1 min-w-0">
-                  <div
-                    className="relative flex flex-col w-full bg-white"
-                    style={{ border: "0.5px solid #e9ecf0" }}
-                  >
-                    {/* Header — click to collapse */}
-                    <button
-                      onClick={() => setOrderExpanded(false)}
-                      className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer"
-                    >
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                        Order details
-                      </p>
+                  <div className="relative flex flex-col w-full bg-white" style={{ border: "0.5px solid #e9ecf0" }}>
+                    <button onClick={() => setOrderExpanded(false)} className="flex items-center justify-between pl-[16px] pr-[16px] py-[14px] w-full cursor-pointer">
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Order details</p>
                       <ChevronUp />
                     </button>
-
-                    {/* Product 1 */}
                     <div className="flex items-start pl-[16px] pr-[16px] py-[12px] gap-[12px]">
                       <div className="flex flex-1 flex-col gap-px min-w-0">
                         <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Men&apos;s Nike Air Max Flyknit Racer Next Nature</p>
@@ -729,8 +482,6 @@ export default function PayPalCheckout() {
                       </div>
                       <p className="text-[14px] text-[#001435] leading-[20px] shrink-0" style={{ fontFamily: "system-ui, sans-serif" }}>$155.00</p>
                     </div>
-
-                    {/* Product 2 */}
                     <div className="flex items-start pl-[16px] pr-[16px] py-[12px] gap-[12px]">
                       <div className="flex flex-1 flex-col gap-px min-w-0">
                         <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Nike Victori One</p>
@@ -739,8 +490,6 @@ export default function PayPalCheckout() {
                       </div>
                       <p className="text-[14px] text-[#001435] leading-[20px] shrink-0" style={{ fontFamily: "system-ui, sans-serif" }}>$100.00</p>
                     </div>
-
-                    {/* Summary rows */}
                     <div className="flex flex-col pl-[16px] pr-[16px] py-[12px] gap-[8px]">
                       {[
                         { label: "Subtotal", value: "$255.00" },
@@ -752,8 +501,6 @@ export default function PayPalCheckout() {
                           <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>{row.value}</p>
                         </div>
                       ))}
-
-                      {/* Offers */}
                       <div className="flex items-center justify-between">
                         <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>3 offers applied:</p>
                       </div>
@@ -772,8 +519,6 @@ export default function PayPalCheckout() {
                         </div>
                       ))}
                     </div>
-
-                    {/* Total row */}
                     <div className="flex items-center justify-between pl-[16px] pr-[16px] py-[12px]">
                       <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Total</p>
                       <p className="text-[20px] font-medium text-[#001435] leading-[26px]" style={{ fontFamily: "system-ui, sans-serif" }}>${currentTotal.toFixed(2)}</p>
@@ -787,24 +532,16 @@ export default function PayPalCheckout() {
                   <button
                     onClick={() => setOrderExpanded(true)}
                     className="relative flex items-start w-full overflow-clip bg-white rounded-bl-[16px] rounded-br-[16px] cursor-pointer text-left"
-                    style={{
-                      border: "0.5px solid #e9ecf0",
-                      boxShadow: "inset 0 0.5px 0 0 #cdd0d4, inset 0 -0.5px 0 0 #cdd0d4, inset 0.5px 0 0 0 #e9ecf0, inset -0.5px 0 0 0 #e9ecf0",
-                    }}
+                    style={{ border: "0.5px solid #e9ecf0", boxShadow: "inset 0 0.5px 0 0 #cdd0d4, inset 0 -0.5px 0 0 #cdd0d4, inset 0.5px 0 0 0 #e9ecf0, inset -0.5px 0 0 0 #e9ecf0" }}
                   >
                     <div className="flex flex-col items-start overflow-clip pl-[16px] pr-[12px] py-[14px] shrink-0 w-[96px]">
                       <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Order</p>
                     </div>
                     <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-                      <div className="flex gap-[4px] items-end w-full">
-                        <p className="text-[16px] font-semibold text-[#001435] leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>${currentTotal.toFixed(2)}</p>
-                        <p className="text-[14px] text-[#545d68] leading-[18px] line-through whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>${(265.00 + DELIVERY_OPTIONS[selectedDelivery].cost).toFixed(2)}</p>
-                      </div>
-                      <p className="text-[14px] text-[#388c00] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>You&apos;re saving $55.00!</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>${currentTotal.toFixed(2)}</p>
+                      <p className="text-[14px] text-[#388c00] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>You&apos;re saving $45.00!</p>
                     </div>
-                    <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0">
-                      <ChevronDown />
-                    </div>
+                    <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0"><ChevronDown /></div>
                   </button>
                 </div>
               </div>
@@ -814,41 +551,120 @@ export default function PayPalCheckout() {
           {/* CTA footer */}
           <div
             className="relative flex flex-col items-start shrink-0 w-full pb-[8px]"
-            style={{
-              background: "#f1f2f3",
-              boxShadow: "0px 0px 4px rgba(0,0,0,0.04), inset 0px 1px 0px 0px #cdd0d4",
-            }}
+            style={{ background: "#f1f2f3", boxShadow: "0px 0px 4px rgba(0,0,0,0.04), inset 0px 1px 0px 0px #cdd0d4" }}
           >
-            {/* About payment methods link */}
             <div className="flex flex-col items-center pt-[8px] px-[24px] shrink-0 w-full">
-              <p
-                className="text-[14px] text-[#0070e0] leading-[20px] underline text-center w-[327px]"
-                style={{ fontFamily: "system-ui, sans-serif" }}
-              >
+              <p className="text-[14px] text-[#0070e0] leading-[20px] underline text-center w-[327px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                 About payment methods
               </p>
             </div>
-
-            {/* Pay button */}
             <div className="flex flex-col items-start px-[20px] py-[12px] shrink-0 w-full">
-              <div className="relative flex gap-[4px] h-[48px] items-center justify-center px-[32px] py-[12px] rounded-[100px] w-full bg-[#0544b5]">
-                {/* "Pay" left side */}
+              <button
+                onClick={() => router.push("/thank-you")}
+                className="relative flex gap-[4px] h-[48px] items-center justify-center px-[32px] py-[12px] rounded-[100px] w-full bg-[#0544b5] cursor-pointer hover:bg-[#003da8] transition-colors"
+              >
                 <div className="flex flex-1 flex-col justify-center min-w-0">
-                  <p className="text-[16px] text-white leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
-                    Pay
-                  </p>
+                  <p className="text-[16px] text-white text-left leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Pay</p>
                 </div>
-                {/* Divider + amount */}
                 <div className="flex gap-[8px] items-center justify-end shrink-0">
-                  {/* Vertical divider line */}
                   <div className="h-[24px] w-px bg-white opacity-30 shrink-0" />
-                  <p className="text-[16px] text-white leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
-                    ${currentTotal.toFixed(2)}
-                  </p>
+                  <p className="text-[16px] text-white leading-[21px] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>${currentInstallment.toFixed(2)} Today</p>
                 </div>
-              </div>
+              </button>
             </div>
           </div>
+
+          {/* Bottom sheet */}
+          {pendingDelivery !== null && (
+            <>
+              {/* Overlay */}
+              <div
+                className="absolute inset-0 z-40"
+                style={{
+                  background: "rgba(0,0,0,0.4)",
+                  transition: "opacity 0.3s ease",
+                  opacity: sheetIn ? 1 : 0,
+                }}
+                onClick={closeSheet}
+              />
+              {/* Sheet */}
+              <div
+                className="absolute bottom-0 left-0 right-0 z-50 bg-white flex flex-col"
+                style={{
+                  borderRadius: "12px 12px 0 0",
+                  height: 240,
+                  transition: "transform 0.3s ease",
+                  transform: sheetIn ? "translateY(0)" : "translateY(100%)",
+                }}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between pl-[20px] pr-[4px] shrink-0" style={{ height: 54 }}>
+                  <p
+                    className="text-[16px] font-semibold text-[#001435] leading-[21px] flex-1 text-center"
+                    style={{ fontFamily: "system-ui, sans-serif" }}
+                  >
+                    You&apos;re changing your loan amount
+                  </p>
+                  <button
+                    onClick={closeSheet}
+                    className="flex items-center justify-center shrink-0 cursor-pointer"
+                    style={{ width: 48, height: 48 }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M3 3L13 13M13 3L3 13" stroke="#001435" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </div>
+                {/* Body */}
+                <div className="px-[16px] py-[12px] flex-1">
+                  <p
+                    className="text-[16px] text-[#001435] leading-[21px]"
+                    style={{ fontFamily: "system-ui, sans-serif" }}
+                  >
+                    Your total loan amount has change, you could be asked to re-apply for Pay in 4.
+                  </p>
+                </div>
+                {/* Buttons */}
+                <div className="flex flex-col items-center gap-[8px] px-[20px] pb-[20px] pt-[12px] shrink-0">
+                  <button
+                    onClick={closeSheet}
+                    className="w-full flex items-center justify-center rounded-[100px] cursor-pointer hover:opacity-90 transition-opacity"
+                    style={{ height: 48, background: "#0544b5" }}
+                  >
+                    <p className="text-[16px] font-semibold text-white leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Cancel</p>
+                  </button>
+                  <button
+                    onClick={confirmDelivery}
+                    className="flex items-center justify-center cursor-pointer"
+                    style={{ height: 24 }}
+                  >
+                    <p className="text-[16px] font-medium text-[#0070e0] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>Continue</p>
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Toast */}
+          {toastVisible && (
+            <div
+              className="absolute left-0 right-0 bottom-[110px] px-[8px] py-[8px] pointer-events-none z-50"
+              style={{ transition: "opacity 0.7s ease", opacity: toastFading ? 0 : 1 }}
+            >
+              <div
+                className="flex items-center gap-[8px] rounded-[12px] px-[16px] w-full"
+                style={{ background: "rgb(0, 20, 53)", height: 56 }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
+                  <circle cx="12" cy="12" r="9" stroke="white" strokeWidth="1.5" />
+                  <path d="M8.5 12L11 14.5L15.5 10" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <p className="text-[16px] text-white leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                  You&apos;re approved!
+                </p>
+              </div>
+            </div>
+          )}
 
         </div>
       </div>
