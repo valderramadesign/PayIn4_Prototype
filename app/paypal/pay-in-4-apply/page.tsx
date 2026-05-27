@@ -17,11 +17,12 @@ export default function PayIn4Apply() {
   const [consentError, setConsentError] = useState(false);
   const [autopayExpanded, setAutopayExpanded] = useState(false);
   const [dobValue, setDobValue] = useState("");
+  const [dobError, setDobError] = useState(false);
   const [dobFocused, setDobFocused] = useState(false);
   const dobRef = useRef<HTMLInputElement>(null);
 
   const dobIsFloating = dobFocused || dobValue.length > 0;
-  const dobIsError = dobValue.length === 10 && dobValue !== "06/01/1980";
+  const dobIsError = (dobValue.length === 10 && dobValue !== "06/01/1980") || dobError;
   const dobBorderColor = dobIsError ? "#d50102" : dobFocused ? "#097bf5" : "#737b84";
   const dobBorderWidth = dobIsError || dobFocused ? 2 : 1;
   const dobBorderRadius = dobFocused && !dobIsError ? 6 : 4;
@@ -96,7 +97,7 @@ export default function PayIn4Apply() {
                 <p className="text-[14px] text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                   Billing address and phone number
                 </p>
-                <button className="text-[14px] text-[#0070e0] leading-[20px] cursor-pointer shrink-0 ml-[8px]" style={{ fontFamily: "system-ui, sans-serif" }}>
+                <button onClick={() => router.push("/paypal/pay-in-4-edit")} className="text-[14px] text-[#0070e0] leading-[20px] cursor-pointer shrink-0 ml-[8px]" style={{ fontFamily: "system-ui, sans-serif" }}>
                   Edit
                 </button>
               </div>
@@ -229,7 +230,11 @@ export default function PayIn4Apply() {
                   ref={dobRef}
                   type="text"
                   value={dobValue}
-                  onChange={(e) => setDobValue(formatDob(e.target.value))}
+                  onChange={(e) => {
+                    const val = formatDob(e.target.value);
+                    setDobValue(val);
+                    setDobError(false);
+                  }}
                   onFocus={() => setDobFocused(true)}
                   onBlur={() => setDobFocused(false)}
                   className="absolute"
@@ -330,7 +335,17 @@ export default function PayIn4Apply() {
             style={{ boxShadow: "inset 0 0.5px 0 0 #e0e3e7" }}
           >
             <button
-              onClick={() => { if (!agreed) setConsentError(true); }}
+              onClick={() => {
+                let hasError = false;
+                if (!agreed) {
+                  setConsentError(true);
+                  hasError = true;
+                }
+                if (dobValue !== "06/01/1980") {
+                  setDobError(true);
+                  hasError = true;
+                }
+              }}
               className="bg-[#0544b5] rounded-full flex items-center justify-center h-[48px] w-full cursor-pointer hover:bg-[#003da8] transition-colors"
             >
               <span className="text-[16px] font-semibold text-white leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>
