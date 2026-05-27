@@ -48,7 +48,7 @@ export default function PayIn4Apply() {
       >
         {/* Modal card */}
         <div
-          className="bg-white rounded-[32px] border border-[#cfd3d8] flex flex-col overflow-clip shrink-0"
+          className="bg-[#f1f2f3] rounded-[32px] border border-[#cfd3d8] flex flex-col overflow-clip shrink-0"
           style={{ width: 424, minHeight: 700, maxHeight: 900 }}
         >
           {/* Nav header */}
@@ -89,7 +89,7 @@ export default function PayIn4Apply() {
             </div>
 
             {/* White card: billing address + autopay */}
-            <div className="mx-[20px] mb-[8px] rounded-[16px] overflow-hidden" style={{ border: "0.5px solid #e0e3e7" }}>
+            <div className="mx-[20px] mb-[8px] rounded-[16px] overflow-hidden bg-white" style={{ border: "0.5px solid #e0e3e7" }}>
 
               {/* Billing address header */}
               <div className="flex items-center justify-between px-[16px] pt-[12px] pb-[10px]">
