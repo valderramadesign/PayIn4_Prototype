@@ -136,7 +136,7 @@ export default function NikeCheckout() {
                   Shipping Address
                 </h3>
                 <div className="flex flex-col gap-1">
-                  {["Timothy Valderrama", "1822 Adams Street", "San Mateo CA 94403", "(415) 685-3878"].map((line) => (
+                  {["Alisha Burgos", "208 Cooperhead Rd.,", "Hartfort, CT", "95821", "(650) 234-5678"].map((line) => (
                     <p key={line} className="text-[14px] text-[#364153] tracking-[-0.015em] leading-5" style={{ fontFamily: "system-ui, sans-serif" }}>
                       {line}
                     </p>

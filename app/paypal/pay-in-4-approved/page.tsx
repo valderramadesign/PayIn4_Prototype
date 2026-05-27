@@ -437,7 +437,7 @@ export default function PayIn4Approved() {
                       <ChevronUp />
                     </button>
                     <div className="flex flex-col gap-px pl-[16px] pr-[16px] py-[14px]">
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>grace.hamilton@gmail.com</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px]" style={{ fontFamily: "system-ui, sans-serif" }}>alisha.burgos@gmail.com</p>
                       <p className="text-[14px] text-[#545d68] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>(650) 234-5678</p>
                     </div>
                   </div>
@@ -455,7 +455,7 @@ export default function PayIn4Approved() {
                       <p className="text-[14px] font-semibold text-[#001435] leading-[20px]" style={{ fontFamily: "system-ui, sans-serif" }}>Contact</p>
                     </div>
                     <div className="flex flex-1 flex-col gap-px items-start min-w-0 py-[14px]">
-                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>grace.hamilton@gmail.com</p>
+                      <p className="text-[16px] font-semibold text-[#001435] leading-[21px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>alisha.burgos@gmail.com</p>
                       <p className="text-[14px] text-[#545d68] leading-[20px] w-full" style={{ fontFamily: "system-ui, sans-serif" }}>(650) 234-5678</p>
                     </div>
                     <div className="flex flex-col items-start pl-[8px] pr-[16px] py-[16px] shrink-0"><ChevronDown /></div>
