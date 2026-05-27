@@ -42,15 +42,14 @@ export default function PayIn4Apply() {
 
       {/* Dark background */}
       <div
-        className="flex-1 flex items-center justify-center py-[60px]"
+        className="flex-1 flex items-stretch sm:items-center justify-center py-0 sm:py-[60px] px-0 sm:px-4"
         style={{
           background: "radial-gradient(ellipse at 50% 50%, #222 0%, #181818 25%, #101010 50%, #080808 75%, #000 100%)",
         }}
       >
         {/* Modal card */}
         <div
-          className="bg-[#f1f2f3] rounded-[32px] border border-[#cfd3d8] flex flex-col overflow-clip shrink-0"
-          style={{ width: 424, minHeight: 700, maxHeight: 900 }}
+          className="bg-[#f1f2f3] sm:rounded-[32px] sm:border sm:border-[#cfd3d8] flex flex-col overflow-clip shrink-0 w-full sm:max-w-[424px] sm:min-h-[700px] sm:max-h-[900px]"
         >
           {/* Nav header */}
           <div className="flex items-center h-[60px] shrink-0 w-full relative">

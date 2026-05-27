@@ -17,7 +17,7 @@ export default function NikeThankYou() {
 
       {/* Nike site header */}
       <header className="border-b border-[#e5e7eb] h-[64px]">
-        <div className="max-w-[1280px] mx-auto px-6 h-full flex items-center justify-between">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
           <Image
             src="/images/checkout/nike-logo.png"
             alt="Nike"
@@ -27,7 +27,7 @@ export default function NikeThankYou() {
             priority
           />
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 sm:gap-6">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/checkout/icon-ship.svg" alt="" className="w-4 h-4" />
 
@@ -35,7 +35,7 @@ export default function NikeThankYou() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/checkout/icon-user.svg" alt="" className="w-4 h-4" />
               <span
-                className="text-[16px] text-[#001435] leading-none whitespace-nowrap"
+                className="text-[16px] text-[#001435] leading-none whitespace-nowrap hidden sm:inline"
                 style={{ fontFamily: "system-ui, sans-serif" }}
               >
                 Alisha Burgos
@@ -43,13 +43,13 @@ export default function NikeThankYou() {
             </div>
 
             <span
-              className="text-[14px] text-[#0a0a0a] tracking-[-0.015em] whitespace-nowrap font-normal"
+              className="text-[14px] text-[#0a0a0a] tracking-[-0.015em] whitespace-nowrap font-normal hidden md:inline"
               style={{ fontFamily: "system-ui, sans-serif" }}
             >
               1-800-806-6453
             </span>
 
-            <div className="flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/checkout/icon-chat.svg" alt="" className="w-4 h-4" />
               <span
@@ -64,8 +64,8 @@ export default function NikeThankYou() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-[1280px] mx-auto px-6 pt-16 pb-16">
-        <div className="flex gap-16 items-start">
+      <main className="max-w-[1280px] mx-auto px-4 sm:px-6 pt-10 sm:pt-16 pb-16">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
           {/* ── Left column — confirmation ─────────────────────── */}
           <div className="flex-1 min-w-0">
             <div className="mb-6">
@@ -74,7 +74,7 @@ export default function NikeThankYou() {
             </div>
 
             <h1
-              className="text-[48px] font-medium text-[#0a0a0a] tracking-[-0.025em] leading-[56px] mb-3"
+              className="text-[32px] sm:text-[48px] font-medium text-[#0a0a0a] tracking-[-0.025em] leading-[40px] sm:leading-[56px] mb-3"
               style={{ fontFamily: "system-ui, sans-serif" }}
             >
               Thank you for your order
@@ -89,7 +89,7 @@ export default function NikeThankYou() {
 
             {/* Order info card */}
             <div className="border border-[#d1d5dc] rounded-[4px] p-6 mb-10 max-w-[560px]">
-              <div className="grid grid-cols-2 gap-x-8 gap-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
                 <div>
                   <p
                     className="text-[12px] uppercase tracking-[0.08em] text-[#6a7282] leading-4 mb-2"
@@ -230,7 +230,7 @@ export default function NikeThankYou() {
           </div>
 
           {/* ── Right column — order summary ─────────────────────── */}
-          <div className="w-[389px] shrink-0">
+          <div className="w-full lg:w-[389px] lg:shrink-0">
             <div className="border border-[#d1d5dc] rounded-[4px] p-6">
               <h2
                 className="text-[20px] font-medium text-[#0a0a0a] tracking-[-0.022em] leading-7 mb-6"

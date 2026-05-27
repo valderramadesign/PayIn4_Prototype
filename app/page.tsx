@@ -16,7 +16,7 @@ export default function NikeCheckout() {
 
       {/* Nike site header */}
       <header className="border-b border-[#e5e7eb] h-[64px]">
-        <div className="max-w-[1280px] mx-auto px-6 h-full flex items-center justify-between">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
           {/* Nike logo */}
           <Image
             src="/images/checkout/nike-logo.png"
@@ -28,7 +28,7 @@ export default function NikeCheckout() {
           />
 
           {/* Nav right */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 sm:gap-6">
             {/* Bag icon */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/checkout/icon-ship.svg" alt="" className="w-4 h-4" />
@@ -38,7 +38,7 @@ export default function NikeCheckout() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/checkout/icon-user.svg" alt="" className="w-4 h-4" />
               <span
-                className="text-[16px] text-[#001435] leading-none whitespace-nowrap"
+                className="hidden sm:inline text-[16px] text-[#001435] leading-none whitespace-nowrap"
                 style={{ fontFamily: "system-ui, sans-serif" }}
               >
                 Alisha Burgos
@@ -46,12 +46,12 @@ export default function NikeCheckout() {
             </div>
 
             {/* Phone */}
-            <span className="text-[14px] text-[#0a0a0a] tracking-[-0.015em] whitespace-nowrap font-normal" style={{ fontFamily: "system-ui, sans-serif" }}>
+            <span className="hidden md:inline text-[14px] text-[#0a0a0a] tracking-[-0.015em] whitespace-nowrap font-normal" style={{ fontFamily: "system-ui, sans-serif" }}>
               1-800-806-6453
             </span>
 
             {/* Live Chat */}
-            <div className="flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/checkout/icon-chat.svg" alt="" className="w-4 h-4" />
               <span className="text-[14px] text-[#0a0a0a] underline tracking-[-0.015em] whitespace-nowrap" style={{ fontFamily: "system-ui, sans-serif" }}>
@@ -63,12 +63,12 @@ export default function NikeCheckout() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-[1280px] mx-auto px-6 pt-8 pb-16">
+      <main className="max-w-[1280px] mx-auto px-4 sm:px-6 pt-8 pb-16">
         <h1 className="text-[24px] font-medium text-[#0a0a0a] tracking-[0.007em] leading-8 mb-8" style={{ fontFamily: "system-ui, sans-serif" }}>
           Checkout
         </h1>
 
-        <div className="flex gap-8 items-start">
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* ── Left column ─────────────────────────────────────── */}
           <div className="flex-1 min-w-0 flex flex-col gap-6">
 
@@ -202,7 +202,7 @@ export default function NikeCheckout() {
           </div>
 
           {/* ── Right column ─────────────────────────────────────── */}
-          <div className="w-[389px] shrink-0">
+          <div className="w-full lg:w-[389px] shrink-0">
             <div className="border-b border-[#d1d5dc] pb-6">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
